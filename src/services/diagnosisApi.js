@@ -1,15 +1,7 @@
 import axios from "axios";
 
-// Configure axios defau    return {
-      success: true,
-      data: {
-        // Use the structured diagnosis data from ChatGPT
-        ...response.data.diagnosis,
-        timestamp: new Date().toISOString(),
-        patient: patientInfo,
-        rawGPTResponse: response.data.rawResponse || response.data.diagnosis
-      }
-    };ios.create({
+// Configure axios default settings
+const api = axios.create({
   timeout: 30000, // 30 seconds timeout
   headers: {
     "Content-Type": "application/json",
@@ -61,19 +53,11 @@ ${
     return {
       success: true,
       data: {
-        diagnosis: response.data.diagnosis,
+        // Use the structured diagnosis data from ChatGPT
+        ...response.data.diagnosis,
         timestamp: new Date().toISOString(),
         patient: patientInfo,
-        confidence: "AI Analysis", // GPT doesn't provide confidence scores
-        riskLevel: "Consultation Required",
-        recommendations: [
-          "This analysis is for educational purposes only",
-          "Please consult with a healthcare professional",
-          "Schedule an appointment with your doctor",
-          "Do not use this as a substitute for professional medical advice",
-        ],
-        followUpQuestions: response.data.questions || null,
-        rawGPTResponse: response.data.diagnosis,
+        rawGPTResponse: response.data.rawResponse || response.data.diagnosis,
       },
     };
   } catch (error) {

@@ -69,7 +69,7 @@ Return ONLY the JSON object, no additional text.`;
     // Parse JSON response from ChatGPT
     const responseText = completion.choices[0].message.content.trim();
     let diagnosisData;
-    
+
     try {
       // Try to parse JSON response
       diagnosisData = JSON.parse(responseText);
@@ -77,7 +77,13 @@ Return ONLY the JSON object, no additional text.`;
       console.error("Failed to parse JSON response:", parseError);
       // Fallback to text response if JSON parsing fails
       diagnosisData = {
-        differentialDiagnosis: [{ condition: "Analysis provided", likelihood: "unknown", description: responseText }],
+        differentialDiagnosis: [
+          {
+            condition: "Analysis provided",
+            likelihood: "unknown",
+            description: responseText,
+          },
+        ],
         recommendedActions: ["Consult healthcare professional"],
         redFlags: [],
         followUp: [],
@@ -85,7 +91,8 @@ Return ONLY the JSON object, no additional text.`;
         urgency: "routine",
         additionalTests: [],
         lifestyle: [],
-        disclaimer: "This analysis is for educational purposes only. Always consult healthcare professionals for medical decisions."
+        disclaimer:
+          "This analysis is for educational purposes only. Always consult healthcare professionals for medical decisions.",
       };
     }
 

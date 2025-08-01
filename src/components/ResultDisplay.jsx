@@ -1,22 +1,22 @@
 import React from "react";
-import DifferentialDiagnosis from './DifferentialDiagnosis';
-import RecommendedActions from './RecommendedActions';
-import RedFlags from './RedFlags';
-import FollowUpCare from './FollowUpCare';
+import DifferentialDiagnosis from "./DifferentialDiagnosis";
+import RecommendedActions from "./RecommendedActions";
+import RedFlags from "./RedFlags";
+import FollowUpCare from "./FollowUpCare";
 
 const ResultDisplay = ({ result, onReset }) => {
   if (!result) return null;
 
-  const { 
-    differentialDiagnosis, 
-    recommendedActions, 
-    redFlags, 
-    followUp, 
-    riskLevel, 
+  const {
+    differentialDiagnosis,
+    recommendedActions,
+    redFlags,
+    followUp,
+    riskLevel,
     urgency,
     additionalTests,
     lifestyle,
-    disclaimer 
+    disclaimer,
   } = result;
 
   const getRiskLevelColor = (level) => {
@@ -93,19 +93,36 @@ const ResultDisplay = ({ result, onReset }) => {
                   <h4 className="text-lg font-semibold text-gray-800">
                     Risk Assessment
                   </h4>
-                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  <svg
+                    className="w-6 h-6 text-purple-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                    />
                   </svg>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-bold border-2 ${getRiskLevelColor(riskLevel)}`}>
+                  <span
+                    className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-bold border-2 ${getRiskLevelColor(
+                      riskLevel
+                    )}`}
+                  >
                     {riskLevel}
                   </span>
                   <div className="flex-1">
                     <div className="text-sm text-gray-600">
-                      {riskLevel?.toLowerCase() === "low" && "Minimal concern indicated"}
-                      {riskLevel?.toLowerCase() === "medium" && "Moderate attention recommended"}
-                      {riskLevel?.toLowerCase() === "high" && "Immediate consultation advised"}
+                      {riskLevel?.toLowerCase() === "low" &&
+                        "Minimal concern indicated"}
+                      {riskLevel?.toLowerCase() === "medium" &&
+                        "Moderate attention recommended"}
+                      {riskLevel?.toLowerCase() === "high" &&
+                        "Immediate consultation advised"}
                     </div>
                   </div>
                 </div>
@@ -118,19 +135,36 @@ const ResultDisplay = ({ result, onReset }) => {
                   <h4 className="text-lg font-semibold text-gray-800">
                     Urgency Level
                   </h4>
-                  <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  <svg
+                    className="w-6 h-6 text-orange-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
                   </svg>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <span className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-bold border-2 ${getUrgencyColor(urgency)}`}>
+                  <span
+                    className={`inline-flex items-center px-4 py-2 rounded-xl text-lg font-bold border-2 ${getUrgencyColor(
+                      urgency
+                    )}`}
+                  >
                     {urgency}
                   </span>
                   <div className="flex-1">
                     <div className="text-sm text-gray-600">
-                      {urgency?.toLowerCase() === "immediate" && "Seek emergency care now"}
-                      {urgency?.toLowerCase() === "urgent" && "Schedule appointment within 24-48 hours"}
-                      {urgency?.toLowerCase() === "routine" && "Standard follow-up care"}
+                      {urgency?.toLowerCase() === "immediate" &&
+                        "Seek emergency care now"}
+                      {urgency?.toLowerCase() === "urgent" &&
+                        "Schedule appointment within 24-48 hours"}
+                      {urgency?.toLowerCase() === "routine" &&
+                        "Standard follow-up care"}
                     </div>
                   </div>
                 </div>
@@ -142,18 +176,18 @@ const ResultDisplay = ({ result, onReset }) => {
           <div className="space-y-8">
             {/* Red Flags - Always show first if present */}
             <RedFlags redFlags={redFlags} />
-            
+
             {/* Differential Diagnosis */}
             <DifferentialDiagnosis diagnoses={differentialDiagnosis} />
-            
+
             {/* Recommended Actions */}
             <RecommendedActions actions={recommendedActions} />
-            
+
             {/* Follow-up Care */}
-            <FollowUpCare 
-              followUp={followUp} 
-              additionalTests={additionalTests} 
-              lifestyle={lifestyle} 
+            <FollowUpCare
+              followUp={followUp}
+              additionalTests={additionalTests}
+              lifestyle={lifestyle}
             />
           </div>
 
@@ -162,17 +196,25 @@ const ResultDisplay = ({ result, onReset }) => {
             <div className="mt-8 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100">
               <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
-                  <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  <svg
+                    className="w-6 h-6 text-amber-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                    />
                   </svg>
                 </div>
                 <div>
                   <h4 className="text-lg font-bold text-amber-900 mb-2">
                     Important Medical Disclaimer
                   </h4>
-                  <p className="text-amber-800 leading-relaxed">
-                    {disclaimer}
-                  </p>
+                  <p className="text-amber-800 leading-relaxed">{disclaimer}</p>
                 </div>
               </div>
             </div>
