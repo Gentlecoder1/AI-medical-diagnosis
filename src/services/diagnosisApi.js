@@ -1,7 +1,15 @@
 import axios from "axios";
 
-// Configure axios defaults
-const api = axios.create({
+// Configure axios defau    return {
+      success: true,
+      data: {
+        // Use the structured diagnosis data from ChatGPT
+        ...response.data.diagnosis,
+        timestamp: new Date().toISOString(),
+        patient: patientInfo,
+        rawGPTResponse: response.data.rawResponse || response.data.diagnosis
+      }
+    };ios.create({
   timeout: 30000, // 30 seconds timeout
   headers: {
     "Content-Type": "application/json",

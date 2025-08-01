@@ -13,20 +13,41 @@ ${JSON.stringify(patientInfo, null, 2)}
 Clinical Presentation:
 ${symptoms}
 
-Provide medical assessment:
+Provide a structured medical assessment in JSON format with the following structure:
 
-1. DIFFERENTIAL DIAGNOSIS:
-List possible conditions in order of likelihood
+{
+  "differentialDiagnosis": [
+    {
+      "condition": "condition name",
+      "likelihood": "high/medium/low",
+      "description": "brief description"
+    }
+  ],
+  "recommendedActions": [
+    "immediate action 1",
+    "immediate action 2"
+  ],
+  "redFlags": [
+    "symptom or finding requiring urgent attention"
+  ],
+  "followUp": [
+    "monitoring instruction 1",
+    "care plan item 2"
+  ],
+  "riskLevel": "low/medium/high",
+  "urgency": "routine/urgent/immediate",
+  "additionalTests": [
+    "recommended test 1",
+    "recommended test 2"
+  ],
+  "lifestyle": [
+    "lifestyle recommendation 1",
+    "lifestyle recommendation 2"
+  ],
+  "disclaimer": "This analysis is for educational purposes only. Always consult healthcare professionals for medical decisions."
+}
 
-2. RECOMMENDED ACTIONS:
-Immediate steps for patient management
-
-3. RED FLAGS:
-Symptoms requiring urgent medical evaluation
-
-4. FOLLOW-UP:
-Recommended monitoring and care plan
-`;
+Return ONLY the JSON object, no additional text.`;
 
     const completion = await openai.chat.completions.create({
       model: process.env.OPENAI_MODEL || "gpt-3.5-turbo",
@@ -34,7 +55,7 @@ Recommended monitoring and care plan
         {
           role: "system",
           content:
-            "You are a clinical decision support system. Provide direct, concise medical assessments without unnecessary pleasantries or formalities. Use standard medical terminology and formatting. Always include educational disclaimer.",
+            "You are a clinical decision support system. Provide structured medical assessments in JSON format only. Be direct, concise, and use standard medical terminology. Always include educational disclaimers.",
         },
         {
           role: "user",
@@ -42,12 +63,36 @@ Recommended monitoring and care plan
         },
       ],
       temperature: parseFloat(process.env.OPENAI_TEMPERATURE) || 0.3,
-      max_tokens: 800,
+      max_tokens: 1000,
     });
+
+    // Parse JSON response from ChatGPT
+    const responseText = completion.choices[0].message.content.trim();
+    let diagnosisData;
+    
+    try {
+      // Try to parse JSON response
+      diagnosisData = JSON.parse(responseText);
+    } catch (parseError) {
+      console.error("Failed to parse JSON response:", parseError);
+      // Fallback to text response if JSON parsing fails
+      diagnosisData = {
+        differentialDiagnosis: [{ condition: "Analysis provided", likelihood: "unknown", description: responseText }],
+        recommendedActions: ["Consult healthcare professional"],
+        redFlags: [],
+        followUp: [],
+        riskLevel: "unknown",
+        urgency: "routine",
+        additionalTests: [],
+        lifestyle: [],
+        disclaimer: "This analysis is for educational purposes only. Always consult healthcare professionals for medical decisions."
+      };
+    }
 
     return {
       success: true,
-      diagnosis: completion.choices[0].message.content,
+      diagnosis: diagnosisData,
+      rawResponse: responseText,
       usage: completion.usage,
     };
   } catch (error) {
